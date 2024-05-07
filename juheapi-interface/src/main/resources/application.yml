@@ -1,0 +1,8 @@
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+juheapi:
+  client:
+    access-key: derder
+    secret-key: 1234567890
