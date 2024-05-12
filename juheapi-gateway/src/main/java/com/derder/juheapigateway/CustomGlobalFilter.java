@@ -7,7 +7,6 @@ import com.derder.service.InnerUserInterfaceInfoService;
 import com.derder.service.InnerUserService;
 import com.derder.utils.SignUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.URL;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.reactivestreams.Publisher;

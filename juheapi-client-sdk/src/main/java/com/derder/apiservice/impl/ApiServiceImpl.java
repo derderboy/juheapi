@@ -28,7 +28,6 @@ import java.util.Map;
 public class ApiServiceImpl implements ApiService {
     private static final String GATEWAY_HOST = MyUrl.GATEWAY_HOST;
 
-
     private JuHeApiClient apiClient;
 
     /**

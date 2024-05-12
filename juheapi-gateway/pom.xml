@@ -50,18 +50,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.derder</groupId>
-            <artifactId>juheapi-client-sdk</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <exclusions>
-                <!-- Spring Cloud Gateway 项目中不能使用 spring-boot-starter-web 依赖-->
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>

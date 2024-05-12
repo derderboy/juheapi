@@ -26,7 +26,7 @@ public class RandomController {
     public String getRandomImage(){
         int randomIndex = RandomUtil.randomInt(1,6);
         System.out.println(randomIndex);
-        String imageFiles = "E:\\桌面\\cloud\\juheapi-backend\\juheapi-interface\\src\\main\\resources\\static\\image\\"+randomIndex+".jpg";
+        String imageFiles = "E:\\桌面\\juheapi\\juheapi-interface\\src\\main\\resources\\static\\image\\"+randomIndex+".jpg";
         File randomImageFile = new File(imageFiles);
         try {
             byte[] imageBytes = Files.readAllBytes(randomImageFile.toPath());

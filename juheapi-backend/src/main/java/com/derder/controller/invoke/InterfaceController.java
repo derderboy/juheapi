@@ -1,5 +1,7 @@
 package com.derder.controller.invoke;
 
+import com.derder.JuHeApiConfig;
+import com.derder.apiservice.impl.ApiServiceImpl;
 import com.derder.client.JuHeApiClient;
 import com.derder.common.BaseResponse;
 import com.derder.common.ErrorCode;
@@ -11,31 +13,26 @@ import com.derder.model.entity.User;
 import com.derder.model.enums.InterfaceInfoStatusEnum;
 import com.derder.service.InterfaceInfoService;
 import com.derder.service.UserService;
-import com.google.gson.Gson;
-import org.springframework.http.ResponseEntity;
+import com.derder.strategy.BaseContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @RestController
 @RequestMapping("/invoke")
 public class InterfaceController {
 
     @Resource
+    private BaseContext baseContext;
+
+
+    @Resource
     private InterfaceInfoService interfaceInfoService;
     @Resource
     private UserService userService;
-
-
-    @GetMapping("/RandomNumber")
-    public String RandomNumber(HttpServletRequest request){
-        User loginUser = userService.getLoginUser(request);
-        String accessKey = loginUser.getAccessKey();
-        String secretKey = loginUser.getSecretKey();
-        JuHeApiClient tempClient = new JuHeApiClient(accessKey, secretKey);
-        return tempClient.getRandomNumber();
-    }
 
     /**
      * 测试调用
@@ -61,13 +58,25 @@ public class InterfaceController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已关闭");
         }
         User loginUser = userService.getLoginUser(request);
-        String accessKey = loginUser.getAccessKey();
-        String secretKey = loginUser.getSecretKey();
-        JuHeApiClient tempClient = new JuHeApiClient(accessKey, secretKey);
-        Gson gson = new Gson();
-        com.derder.model.User user = gson.fromJson(userRequestParams, com.derder.model.User.class);
-        String usernameByPost = tempClient.getUsernameByPost(user);
-        return ResultUtils.success(usernameByPost);
+        String method = oldInterfaceInfo.getMethod();
+//        BaseContext baseContext = definitionBaseContext(loginUser);
+        String uri = oldInterfaceInfo.getUri();
+        log.info(uri);
+        String result = baseContext.handler(uri, userRequestParams, method);
+        return ResultUtils.success(result);
     }
-
+//    private BaseContext definitionBaseContext(User loginUser) {
+//        String accessKey = loginUser.getAccessKey();
+//        String secretKey = loginUser.getSecretKey();
+//
+//        // 创建ApiServiceImpl实例
+//        ApiServiceImpl apiService = new ApiServiceImpl();
+//        // 设置ApiServiceImpl的ApiClient属性
+//        apiService.setApiClient(new JuHeApiClient(accessKey, secretKey));
+////        apiService.setApiClient(juHeApiClient);
+//        // 设置baseContext的ApiClient属性
+//
+//        baseContext.setApiClient(apiService);
+//        return baseContext;
+//    }
 }

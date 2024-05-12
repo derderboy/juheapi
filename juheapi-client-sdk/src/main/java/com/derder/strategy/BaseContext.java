@@ -1,9 +1,16 @@
 package com.derder.strategy;
 
 import com.derder.apiservice.ApiService;
+import com.derder.apiservice.impl.ApiServiceImpl;
+import com.derder.client.JuHeApiClient;
 import com.derder.constant.MyUrl;
 import com.derder.strategy.impl.GetNameStrategy;
 import com.derder.strategy.impl.NoParamsStrategy;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,9 +20,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author derder
  * @version 1.0
  */
+@Data
 public class BaseContext {
     private static final Map<String, BaseStrategy> strategyMap = new ConcurrentHashMap<>();
     private ApiService apiService;
+    private String accessKey;
+    private String secretKey;
     private static final NoParamsStrategy NO_PARAMS_STRATEGY = new NoParamsStrategy();
     private static final GetNameStrategy GET_NAME_STRATEGY = new GetNameStrategy();
 
@@ -27,13 +37,8 @@ public class BaseContext {
         // 获取随机卡通动物图片
         strategyMap.put(MyUrl.GET_ANIMALIMAGE, NO_PARAMS_STRATEGY);
 
-
-        strategyMap.put(MyUrl.RANDOM_SCENERY, NO_PARAMS_STRATEGY);
-        strategyMap.put(MyUrl.MO_YU, NO_PARAMS_STRATEGY);
-        strategyMap.put(MyUrl.TALK_LOVE, NO_PARAMS_STRATEGY);
-        strategyMap.put(MyUrl.RANDOM_WALLPAPER, NO_PARAMS_STRATEGY);
-
     }
+
 
     public String handler(String restfulUrl, String params, String method) {
         BaseStrategy baseStrategy = strategyMap.get(restfulUrl);
@@ -43,4 +48,5 @@ public class BaseContext {
     public void setApiClient(ApiService apiService) {
         this.apiService = apiService;
     }
+
 }
