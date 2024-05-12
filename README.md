@@ -1,7 +1,7 @@
 # 聚合api调用平台
 ## 快速调用：
 - 引入sdk
-```java
+```maven
     <dependency>
         <groupId>com.derder</groupId>
         <artifactId>juheapi-client-sdk</artifactId>
@@ -10,7 +10,7 @@
     </dependency>
 ```
 - 配置ak,sk
-```java
+```yml
 juheapi:
   client:
     access-key: ***
