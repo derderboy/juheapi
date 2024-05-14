@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.derder.mapper.InvokeInterfaceInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.derder.model.entity.InvokeInterfaceInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userid" column="userId" jdbcType="BIGINT"/>
+            <result property="interfaceinfoid" column="interfaceInfoId" jdbcType="BIGINT"/>
+            <result property="ip" column="ip" jdbcType="BIGINT"/>
+            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userId,interfaceInfoId,
+        ip,createTime
+    </sql>
+</mapper>

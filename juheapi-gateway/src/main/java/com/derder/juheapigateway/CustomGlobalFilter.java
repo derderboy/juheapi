@@ -3,6 +3,7 @@ package com.derder.juheapigateway;
 import com.derder.model.entity.InterfaceInfo;
 import com.derder.model.entity.User;
 import com.derder.service.InnerInterfaceInfoService;
+import com.derder.service.InnerInvokeInterfaceInfoService;
 import com.derder.service.InnerUserInterfaceInfoService;
 import com.derder.service.InnerUserService;
 import com.derder.utils.SignUtil;
@@ -46,6 +47,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     @DubboReference
     private InnerInterfaceInfoService innerInterfaceInfoService;
+
+    @DubboReference
+    private InnerInvokeInterfaceInfoService innerInvokeInterfaceInfoService;
 
     @DubboReference
     private InnerUserInterfaceInfoService innerUserInterfaceInfoService;
@@ -127,11 +131,14 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             return handleNoAuth(response);
         }
         // todo 是否还有调用次数
-        // 7. 调用成功，接口调用次数 + 1 invokeCount
+        // 7. 调用成功，接口调用次数 + 1 invokeCount,并添加调用记录
         try {
             System.out.println("77777777777777777==============================");
+            // 增加调用次数
             Boolean b = innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
-            if (!b){
+            // 添加调用记录
+            Boolean c = innerInvokeInterfaceInfoService.addInvokeInterfaceInfo(invokeUser.getId(),interfaceInfo.getId(),sourceAddress);
+            if (!b||!c){
                 return handleNoAuth(response);
             }
         } catch (Exception e) {

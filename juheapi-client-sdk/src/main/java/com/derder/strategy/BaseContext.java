@@ -39,7 +39,6 @@ public class BaseContext {
 
     }
 
-
     public String handler(String restfulUrl, String params, String method) {
         BaseStrategy baseStrategy = strategyMap.get(restfulUrl);
         return baseStrategy.handlerRequest(restfulUrl, params, apiService, method);

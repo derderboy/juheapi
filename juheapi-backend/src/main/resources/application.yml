@@ -1,6 +1,5 @@
 # 公共配置文件
 server:
-  address: 0.0.0.0
   port: 8101
   servlet:
     context-path: /api
@@ -13,7 +12,7 @@ spring:
     name: juheapi-backend
   # 默认 dev 环境
   profiles:
-    active: dev
+    active: prod
   # 支持 swagger3
   mvc:
     pathmatch:

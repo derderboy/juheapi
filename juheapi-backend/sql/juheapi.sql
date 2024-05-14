@@ -57,6 +57,17 @@ create table if not exists juheapi.`user_interface_info`
     `isDelete` tinyint default 0 not null comment '是否删除(0-未删, 1-已删)'
 ) comment '用户调用接口关系';
 
+create table if not exists juheapi.`invoke_interface_info`
+(
+    `id` bigint not null auto_increment comment '主键' primary key,
+    `userId` bigint not null comment '调用用户 id',
+    `interfaceInfoId` bigint not null comment '接口 id',
+    `ip` bigint not null comment '调用ip',
+    `createTime` datetime default CURRENT_TIMESTAMP not null comment '创建时间'
+) comment '调用接口';
+
+
+
 insert into juheapi.`interface_info` (`name`, `description`, `url`, `requestParams`,`requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('许擎宇', '薛聪健', 'www.cary-king.net', 'requestParams', '潘博涛', '谭聪健', 0, '石炫明', 9500534531);
 insert into juheapi.`interface_info` (`name`, `description`, `url`, `requestParams`,`requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('陆弘文', '白志强', 'www.leslee-kuhn.net', 'requestParams', '潘懿轩', '马鸿涛', 0, '陈峻熙', 3982575846);
 insert into juheapi.`interface_info` (`name`, `description`, `url`, `requestParams`,`requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('毛建辉', '罗文', 'www.rosaria-kilback.io', 'requestParams', '冯子默', '彭哲瀚', 0, '赵远航', 121776355);

@@ -1,6 +1,5 @@
 package com.derder.model.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,13 +8,11 @@ import java.util.Date;
 /**
  * 接口信息
  */
-@TableName(value ="interface_info")
 @Data
 public class InterfaceInfo implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -84,9 +81,7 @@ public class InterfaceInfo implements Serializable {
     /**
      * 是否删除(0-未删, 1-已删)
      */
-    @TableLogic
     private Integer isDelete;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

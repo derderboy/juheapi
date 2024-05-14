@@ -1,6 +1,5 @@
 package com.derder.model.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,13 +8,11 @@ import java.util.Date;
 /**
  * 用户
  */
-@TableName(value = "user")
 @Data
 public class User implements Serializable {
     /**
      * id
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -71,9 +68,7 @@ public class User implements Serializable {
     /**
      * 是否删除
      */
-    @TableLogic
     private Integer isDelete;
 
-    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

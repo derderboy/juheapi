@@ -13,8 +13,8 @@
 ```yml
 juheapi:
   client:
-    access-key: ***
-    secret-key: ***
+    access-key: xxxx
+    secret-key: xxxx
 ```
 
 - 注入依赖

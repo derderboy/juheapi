@@ -13,7 +13,6 @@ public class JuHeApiClient {
 
     private String secretKey;
 
-
     public JuHeApiClient(String accessKey, String secretKey) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;

@@ -1,5 +1,8 @@
 package com.derder.controller;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.derder.annotation.AuthCheck;
 import com.derder.common.BaseResponse;
@@ -287,4 +290,64 @@ public class UserController {
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
     }
+    /**
+     * 更新密钥
+     *
+     * @param UserUpdateRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/update/key")
+    public BaseResponse<Boolean> updateUserKey(@RequestBody UserUpdateRequest UserUpdateRequest,
+                                               HttpServletRequest request) {
+        if (UserUpdateRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        String userAccount = loginUser.getUserAccount();
+        String accessKey = DigestUtil.md5Hex(SALT + userAccount + RandomUtil.randomNumbers(5));
+        String secretKey = DigestUtil.md5Hex(SALT + userAccount + RandomUtil.randomNumbers(8));
+        UpdateWrapper<User> wrapper = new UpdateWrapper<>();
+        wrapper.set("accessKey", accessKey);
+        wrapper.set("secretKey", secretKey);
+        wrapper.eq("id", loginUser.getId());
+        wrapper.eq("userAccount", userAccount);
+        boolean result = userService.update(wrapper);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        return ResultUtils.success(true);
+    }
+
+//    @PostMapping("/sign")
+//    public BaseResponse<Boolean> UserSign(@RequestBody UserUpdateRequest userUpdateRequest,
+//                                          HttpServletRequest request) {
+//        if (userUpdateRequest == null || userUpdateRequest.getId() == null) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        Long userId = userUpdateRequest.getId();
+//        User user = userService.getById(userId);
+//        if (user.getLeftNum() >= 100) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR, "积分已达上限请先使用");
+//        }
+//        Date oldDate = user.getSignDate();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        SimpleDateFormat compare = new SimpleDateFormat("yyyy-MM-dd");
+//        Date nowDate = new Date();
+//        String currentTime = compare.format(nowDate);
+//        String oldDateTime = compare.format(oldDate);
+//        if (currentTime.equals(oldDateTime)) {
+//            throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "今日已签到");
+//        }
+//        user.setLeftNum((user.getLeftNum() + 10));
+//        Date parse = null;
+//        try {
+//            String format = dateFormat.format(nowDate);
+//            parse = dateFormat.parse(format);
+//        } catch (ParseException e) {
+//            throw new BusinessException(ErrorCode.OPERATION_ERROR, "签到时间转换异常");
+//        }
+//        user.setSignDate(parse);
+//        userService.updateById(user);
+//        return ResultUtils.success(true);
+//    }
+//
 }

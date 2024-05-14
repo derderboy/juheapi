@@ -2,22 +2,19 @@
 server:
   port: 8090
 spring:
-  # 默认 dev 环境
-  profiles:
-    active: prod
   cloud:
     gateway:
       default-filters:
         - AddResponseHeader=source, derder
       routes:
         - id: api_route
-          uri: http://localhost:8123
+          uri: http://47.103.133.251:8123
           predicates:
             - Path=/api/**
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:12345/juheapi
-    username: root
+    url: jdbc:mysql://47.103.133.251:3306/juheapi
+    username: juheapi
     password: 1234
 
 logging:
@@ -35,5 +32,5 @@ dubbo:
     port: -1
   registry:
     id: nacos-registry
-    address: nacos://localhost:8848
+    address: nacos://47.103.133.251:8848
 
