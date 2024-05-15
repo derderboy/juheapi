@@ -11,12 +11,6 @@ spring:
           uri: http://47.103.133.251:8123
           predicates:
             - Path=/api/**
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.103.133.251:3306/juheapi
-    username: juheapi
-    password: 1234
-
 logging:
   level:
     org:
@@ -33,4 +27,3 @@ dubbo:
   registry:
     id: nacos-registry
     address: nacos://47.103.133.251:8848
-

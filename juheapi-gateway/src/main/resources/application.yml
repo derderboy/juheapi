@@ -14,12 +14,6 @@ spring:
           uri: http://localhost:8123
           predicates:
             - Path=/api/**
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:12345/juheapi
-    username: root
-    password: 1234
-
 logging:
   level:
     org:
@@ -36,4 +30,3 @@ dubbo:
   registry:
     id: nacos-registry
     address: nacos://localhost:8848
-

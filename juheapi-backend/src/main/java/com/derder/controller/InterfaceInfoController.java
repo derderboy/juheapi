@@ -242,49 +242,49 @@ public class InterfaceInfoController {
         return ResultUtils.success(result);
     }
 
-    /**
-     * 测试调用
-     *
-     * @param interfaceInfoInvokeRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/invoke")
-    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
-                                                    HttpServletRequest request) {
-        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() < 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        long id = interfaceInfoInvokeRequest.getId();
-        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
-        // 判断是否存在
-        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
-        if (oldInterfaceInfo == null) {
-            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
-        }
-        if (oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已关闭");
-        }
-        User loginUser = userService.getLoginUser(request);
-        String method = oldInterfaceInfo.getMethod();
-
-        BaseContext baseContext = definitionBaseContext(loginUser);
-        String uri = oldInterfaceInfo.getUri();
-        log.info(uri);
-        String result = baseContext.handler(uri, userRequestParams, method);
-        return ResultUtils.success(result);
-    }
-
-    // 根据用户信息创建definitionBaseContext
-    private BaseContext definitionBaseContext(User loginUser) {
-        String accessKey = loginUser.getAccessKey();
-        String secretKey = loginUser.getSecretKey();
-        // 创建ApiServiceImpl实例
-        ApiServiceImpl apiService = new ApiServiceImpl();
-        // 设置ApiServiceImpl的ApiClient属性
-        apiService.setApiClient(new JuHeApiClient(accessKey, secretKey));
-        // 设置baseContext的ApiClient属性
-        baseContext.setApiClient(apiService);
-        return baseContext;
-    }
+//    /**
+//     * 测试调用
+//     *
+//     * @param interfaceInfoInvokeRequest
+//     * @param request
+//     * @return
+//     */
+//    @PostMapping("/invoke")
+//    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
+//                                                    HttpServletRequest request) {
+//        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() < 0) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        long id = interfaceInfoInvokeRequest.getId();
+//        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+//        // 判断是否存在
+//        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+//        if (oldInterfaceInfo == null) {
+//            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+//        }
+//        if (oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已关闭");
+//        }
+//        User loginUser = userService.getLoginUser(request);
+//        String method = oldInterfaceInfo.getMethod();
+//
+//        BaseContext baseContext = definitionBaseContext(loginUser);
+//        String uri = oldInterfaceInfo.getUri();
+//        log.info(uri);
+//        String result = baseContext.handler(uri, userRequestParams, method);
+//        return ResultUtils.success(result);
+//    }
+//
+//    // 根据用户信息创建definitionBaseContext
+//    private BaseContext definitionBaseContext(User loginUser) {
+//        String accessKey = loginUser.getAccessKey();
+//        String secretKey = loginUser.getSecretKey();
+//        // 创建ApiServiceImpl实例
+//        ApiServiceImpl apiService = new ApiServiceImpl();
+//        // 设置ApiServiceImpl的ApiClient属性
+//        apiService.setApiClient(new JuHeApiClient(accessKey, secretKey));
+//        // 设置baseContext的ApiClient属性
+//        baseContext.setApiClient(apiService);
+//        return baseContext;
+//    }
 }
