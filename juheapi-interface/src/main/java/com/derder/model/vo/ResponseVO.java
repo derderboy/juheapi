@@ -9,12 +9,8 @@ public class ResponseVO implements Serializable {
 
     String type;
     Object data;
-
-
-
     public ResponseVO( String type, Object data) {
         this.type=type;
         this.data=data;
-
     }
 }

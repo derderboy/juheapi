@@ -10,18 +10,19 @@ import com.derder.strategy.BaseStrategy;
 import com.derder.strategy.StrategyFactory;
 import com.derder.utils.SignUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Service
 @Slf4j
-public class GetNameStrategy implements BaseStrategy {
+public class RandomNumberStrategy implements BaseStrategy, InitializingBean {
+
     private static final String GATEWAY_HOST = MyUrl.GATEWAY_HOST;
 
     @Autowired
@@ -37,12 +38,12 @@ public class GetNameStrategy implements BaseStrategy {
         }
         json = getJson(params);
         HttpResponse response = null;
-        // 向网关发送请求
-        response=HttpRequest.post(GATEWAY_HOST + restfulUrl)
+        response= HttpRequest.get(GATEWAY_HOST + restfulUrl)
                 .addHeaders(getHeaderMap(json))
                 .body(json)
                 .execute()
                 .charset(StandardCharsets.UTF_8);
+
         String result = response.body();
         log.info("SDK 返回状态为: {}", response.getStatus());
         log.info("SDK 返回结果为: {}", result);
@@ -52,14 +53,12 @@ public class GetNameStrategy implements BaseStrategy {
 
     /**
      * 封装请求头Map
-     * params body 请求头参数
+     * @params body 请求头参数
      * @return 请求头Map
      */
     private Map<String, String> getHeaderMap(String body) {
         HashMap<String, String> keyMap = new HashMap<>();
-        // 添加请求头参数
         keyMap.put("accessKey", apiClient.getAccessKey());
-        // 添加随机数
         keyMap.put("nonce", RandomUtil.randomNumbers(4));
         try {
             keyMap.put("body", URLEncoder.encode(body, "utf8"));
@@ -67,26 +66,18 @@ public class GetNameStrategy implements BaseStrategy {
             log.error("加密传递参数出错,异常信息为: " + e);
             throw new RuntimeException("加密传递参数出错");
         }
-        // 添加时间戳 防止请求重发
         keyMap.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
-        // 添加签名 防止修改请求参数
         keyMap.put("sign", SignUtil.genSign(body, apiClient.getSecretKey()));
         return keyMap;
     }
 
-    /**
-     * 参数json化
-     * @param params 参数
-     * @return String
-     */
     private <T> String getJson(T params) {
         return JSONUtil.toJsonStr(params);
     }
 
 
-    @PostConstruct
-    public void init() {
-        StrategyFactory.register(MyUrl.GET_YOURNAME, this);
-        log.info("Strategy registered for {}",MyUrl.GET_YOURNAME);
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        StrategyFactory.register("/api/randomNumber", this);
     }
 }

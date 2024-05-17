@@ -76,5 +76,5 @@ knife4j:
           - com.derder.controller
 juheapi:
   client:
-    access-key: 315b821f45b86dad080d85b2d074b284
-    secret-key: 1fed8b2207dde1015413eae0ed57881a
+    access-key: 64978effdc5656165b87ed267ab9a7b3
+    secret-key: 5bd739dee2c5b464142ac293d4ef4be2

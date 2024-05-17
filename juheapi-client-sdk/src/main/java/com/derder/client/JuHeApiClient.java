@@ -1,5 +1,7 @@
 package com.derder.client;
 
+import com.derder.strategy.StrategyContext;
+import com.derder.strategy.StrategyFactory;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -10,13 +12,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("juheapi.client")
 public class JuHeApiClient {
     private String accessKey;
-
     private String secretKey;
 
-    public JuHeApiClient(String accessKey, String secretKey) {
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
+    public String getResult(String restfulUrl, String params) {
+        StrategyContext context = new StrategyContext();
+        context.setStrategy(StrategyFactory.getStrategy(restfulUrl));
+        return context.executeStrategy(restfulUrl, params);
     }
-
-    public JuHeApiClient() {}
 }

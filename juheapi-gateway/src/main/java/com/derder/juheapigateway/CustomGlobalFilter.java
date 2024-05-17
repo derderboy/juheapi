@@ -73,11 +73,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         log.info("请求来源地址：" + sourceAddress);
         log.info("请求来源地址：" + request.getRemoteAddress());
         ServerHttpResponse response = exchange.getResponse();
-        // 2. 访问控制 - 黑白名单
-        if (!IP_WHITE_LIST.contains(sourceAddress)) {
-            response.setStatusCode(HttpStatus.FORBIDDEN);
-            return response.setComplete();
-        }
+        // todo 找一个更好的验证黑白名单 2. 访问控制 - 黑白名单
+//        if (!IP_WHITE_LIST.contains(sourceAddress)) {
+//            response.setStatusCode(HttpStatus.FORBIDDEN);
+//            return response.setComplete();
+//        }
         // 3. 用户鉴权（判断 ak、sk 是否合法）
         HttpHeaders headers = request.getHeaders();
         String accessKey = headers.getFirst("accessKey");
@@ -124,7 +124,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         InterfaceInfo interfaceInfo = null;
         try {
             interfaceInfo = innerInterfaceInfoService.getInterfaceInfo(path, method);
-            System.out.println("4444444444444444444==============================");
         } catch (Exception e) {
             log.error("getInterfaceInfo error", e);
         }
@@ -134,7 +133,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         // todo 是否还有调用次数
         // 7. 调用成功，接口调用次数 + 1 invokeCount,并添加调用记录
         try {
-            System.out.println("77777777777777777==============================");
             // 增加调用次数
             Boolean b = innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
             // 添加调用记录
@@ -145,9 +143,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         } catch (Exception e) {
             log.error("invokeCount error", e);
         }
-        // 5. 请求转发，调用模拟接口 + 响应日志
-        //        Mono<Void> filter = chain.filter(exchange);
-        //        return filter;
         return handleResponse(exchange, chain);
 
     }

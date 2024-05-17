@@ -1,7 +1,7 @@
 # 聚合api调用平台
 ## 快速调用：
 - 引入sdk
-```maven
+```xml
     <dependency>
         <groupId>com.derder</groupId>
         <artifactId>juheapi-client-sdk</artifactId>

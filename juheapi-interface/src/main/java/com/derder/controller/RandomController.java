@@ -18,13 +18,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController()
 @RequestMapping()
 public class RandomController {
     @Autowired
     private ResourceLoader resourceLoader;
-    @GetMapping("/RandomNumber")
+    @GetMapping("/randomNumber")
     public String getRandomNumber(){
         return new Gson().toJson(new BaseResponse<>(200, new ResponseVO(ResultTypeEnum.STRING.getValue(),RandomUtil.randomNumbers(3))));
     }
@@ -50,5 +52,20 @@ public class RandomController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/food")
+    public String getRandomFood(){
+        List<String> list = new ArrayList<>();
+        list.add("大盘鸡");
+        list.add("小包子");
+        list.add("西瓜");
+        list.add("葱花饼");
+        list.add("小掌柜");
+        list.add("豆腐汤");
+        list.add("牛肉汤");
+        list.add("兰州拉面");
+        int randomIndex = RandomUtil.randomInt(0,list.size());
+        return new Gson().toJson(new BaseResponse<>(200, new ResponseVO(ResultTypeEnum.STRING.getValue(),list.get(randomIndex))));
     }
 }

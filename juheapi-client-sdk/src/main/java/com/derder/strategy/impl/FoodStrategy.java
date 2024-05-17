@@ -6,8 +6,8 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
 import com.derder.client.JuHeApiClient;
 import com.derder.constant.MyUrl;
-import com.derder.strategy.BaseStrategy;
 import com.derder.strategy.StrategyFactory;
+import com.derder.strategy.BaseStrategy;
 import com.derder.utils.SignUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,12 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class GetNameStrategy implements BaseStrategy {
+public class FoodStrategy implements BaseStrategy {
     private static final String GATEWAY_HOST = MyUrl.GATEWAY_HOST;
 
     @Autowired
     private JuHeApiClient apiClient;
+
     @Override
     public String handlerRequest(String restfulUrl, String params) {
         log.info("url = {} , paramss = {} ", restfulUrl, params);
@@ -51,10 +52,10 @@ public class GetNameStrategy implements BaseStrategy {
 
 
     /**
-     * 封装请求头Map
-     * params body 请求头参数
-     * @return 请求头Map
-     */
+    * 封装请求头Map
+    * params body 请求头参数
+    * @return 请求头Map
+    */
     private Map<String, String> getHeaderMap(String body) {
         HashMap<String, String> keyMap = new HashMap<>();
         // 添加请求头参数
@@ -75,10 +76,10 @@ public class GetNameStrategy implements BaseStrategy {
     }
 
     /**
-     * 参数json化
-     * @param params 参数
-     * @return String
-     */
+    * 参数json化
+    * @param params 参数
+    * @return String
+    */
     private <T> String getJson(T params) {
         return JSONUtil.toJsonStr(params);
     }
@@ -86,7 +87,7 @@ public class GetNameStrategy implements BaseStrategy {
 
     @PostConstruct
     public void init() {
-        StrategyFactory.register(MyUrl.GET_YOURNAME, this);
-        log.info("Strategy registered for {}",MyUrl.GET_YOURNAME);
+        StrategyFactory.register(MyUrl.Get_Food, this);
+        log.info("Strategy registered for {}",MyUrl.Get_Food);
     }
 }
