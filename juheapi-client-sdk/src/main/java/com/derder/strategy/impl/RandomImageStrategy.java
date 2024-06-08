@@ -81,7 +81,7 @@ public class RandomImageStrategy implements BaseStrategy {
 
     @PostConstruct
     public void init() {
-        StrategyFactory.register("/api/randomImage", this);
+        StrategyFactory.register(MyUrl.RANDOM_NUMBER, this);
         log.info("Strategy registered for /api/randomImage");
     }
 }

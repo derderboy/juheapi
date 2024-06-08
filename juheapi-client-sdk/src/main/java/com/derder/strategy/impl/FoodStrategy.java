@@ -39,7 +39,7 @@ public class FoodStrategy implements BaseStrategy {
         json = getJson(params);
         HttpResponse response = null;
         // 向网关发送请求
-        response=HttpRequest.post(GATEWAY_HOST + restfulUrl)
+        response=HttpRequest.get(GATEWAY_HOST + restfulUrl)
                 .addHeaders(getHeaderMap(json))
                 .body(json)
                 .execute()

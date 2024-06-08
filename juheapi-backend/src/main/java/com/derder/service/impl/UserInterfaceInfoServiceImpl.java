@@ -55,7 +55,7 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
             userInterfaceInfo.setInterfaceInfoId(interfaceInfoId);
             // todo 之后可根据接口的免费调用次数来设置
             userInterfaceInfo.setTotalNum(50);
-            userInterfaceInfo.setLeftNum(50-1);
+            userInterfaceInfo.setLeftNum(100000);
             return this.save(userInterfaceInfo);
         }else {
             // 存在就更新

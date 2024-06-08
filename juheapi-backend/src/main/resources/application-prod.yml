@@ -31,7 +31,7 @@ dubbo:
     port: -1
   registry:
     id: nacos-registry
-    address: nacos://47.103.133.251:8848?register-consumer-url=true
+    address: nacos://47.103.133.251:8848
   config-center:
     timeout: 40000
 mybatis-plus:
