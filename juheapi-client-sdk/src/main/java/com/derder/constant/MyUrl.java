@@ -10,7 +10,7 @@ public interface MyUrl {
     /**
     * 网关
     */
-    String GATEWAY_HOST = "http://derder.tech:8090";
+    String GATEWAY_HOST = "http://localhost:8090";
     /**
     * 获取随机数
     */

@@ -69,6 +69,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         log.info("请求路径：" + path);
         log.info("请求方法：" + method);
         log.info("请求参数：" + request.getQueryParams());
+        String ip = request.getRemoteAddress().getAddress().getHostAddress();
         String sourceAddress = Objects.requireNonNull(request.getLocalAddress()).getHostString();
         log.info("请求来源地址：" + sourceAddress);
         log.info("请求来源地址：" + request.getRemoteAddress());
@@ -136,7 +137,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             // 增加调用次数
             Boolean b = innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
             // 添加调用记录
-            Boolean c = innerInvokeInterfaceInfoService.addInvokeInterfaceInfo(invokeUser.getId(),interfaceInfo.getId(),sourceAddress);
+            Boolean c = innerInvokeInterfaceInfoService.addInvokeInterfaceInfo(invokeUser.getId(),interfaceInfo.getId(),ip);
             if (!b||!c){
                 return handleNoAuth(response);
             }

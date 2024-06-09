@@ -66,7 +66,15 @@ create table if not exists juheapi.`invoke_interface_info`
     `createTime` datetime default CURRENT_TIMESTAMP not null comment '创建时间'
 ) comment '调用接口';
 
-
+-- 黑名单
+CREATE TABLE if not exists juheapi.`ip_blacklist` (
+      id BIGINT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
+      ip_address VARCHAR(15) NOT NULL COMMENT 'IP地址',
+      userid BIGINT NOT NULL COMMENT '用户ID',
+      added_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
+      reason TEXT COMMENT '加入黑名单原因',
+      UNIQUE KEY unique_ip (ip_address)
+) COMMENT 'IP黑名单';
 
 insert into juheapi.`interface_info` (`name`, `description`, `url`, `requestParams`,`requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('许擎宇', '薛聪健', 'www.cary-king.net', 'requestParams', '潘博涛', '谭聪健', 0, '石炫明', 9500534531);
 insert into juheapi.`interface_info` (`name`, `description`, `url`, `requestParams`,`requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('陆弘文', '白志强', 'www.leslee-kuhn.net', 'requestParams', '潘懿轩', '马鸿涛', 0, '陈峻熙', 3982575846);

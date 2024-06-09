@@ -13,9 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @EnableDubbo
 public class JuheapiBackendApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(JuheapiBackendApplication.class, args);
     }
-
 }
