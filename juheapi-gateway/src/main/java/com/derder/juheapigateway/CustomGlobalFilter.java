@@ -6,9 +6,7 @@ import com.derder.service.*;
 import com.derder.utils.SignUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.reactivestreams.Publisher;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -37,23 +35,11 @@ import java.util.*;
  */
 @Slf4j
 @Component
-@EnableDubbo
 @Service
 public class CustomGlobalFilter implements GlobalFilter, Ordered {
-    public static Set<Object> blackIpList = new HashSet<>();
 
-    @DubboReference
-    private InnerIpBlackService innerIpBlackService;
-    @RabbitListener(queues = "ipBlack.queue")
-    public void setBlackIpList(String message) {
-        blackIpList = null;
-        blackIpList = innerIpBlackService.getBlackIpList();
-        if(blackIpList.isEmpty()){
-            // 没有黑名单IP，则清空黑名单列表,并赋值一个空字符
-            blackIpList = new HashSet<>();
-            blackIpList.add("");
-        }
-    }
+    @Resource
+    private BlackIpListMQ blackIpListMQ;
 
     @DubboReference
     private InnerUserService innerUserService;
@@ -66,9 +52,6 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     @DubboReference
     private InnerUserInterfaceInfoService innerUserInterfaceInfoService;
-
-//    private static final List<String> IP_WHITE_LIST = Collections.singletonList("127.0.0.1");
-//    private static final Set<Object> IP_BLACK_LIST = BlackIpListMQ.blackIpList;
 
     private static final String INTERFACE_HOST = "http://localhost:8123";
 
@@ -88,18 +71,12 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         log.info("请求来源地址：" + sourceAddress);
         log.info("请求来源地址：" + request.getRemoteAddress());
         ServerHttpResponse response = exchange.getResponse();
-        // todo 找一个更好的验证黑白名单 2. 访问控制 - 黑白名单
-
         // 2. 访问控制 - 黑名单
-        if(blackIpList.contains(ip)){
+        if (blackIpListMQ.isBlackListed(ip)) {
             response.setStatusCode(HttpStatus.FORBIDDEN);
             return response.setComplete();
         }
 
-//        if (!IP_WHITE_LIST.contains(sourceAddress)) {
-//            response.setStatusCode(HttpStatus.FORBIDDEN);
-//            return response.setComplete();
-//        }
         // 3. 用户鉴权（判断 ak、sk 是否合法）
         HttpHeaders headers = request.getHeaders();
         String accessKey = headers.getFirst("accessKey");
@@ -152,13 +129,12 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (interfaceInfo == null) {
             return handleNoAuth(response);
         }
-        // todo 是否还有调用次数
         // 7. 调用成功，接口调用次数 + 1 invokeCount,并添加调用记录
         try {
             // 增加调用次数
-            Boolean b = innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
+            boolean b = innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
             // 添加调用记录
-            Boolean c = innerInvokeInterfaceInfoService.addInvokeInterfaceInfo(invokeUser.getId(),interfaceInfo.getId(),ip);
+            boolean c = innerInvokeInterfaceInfoService.addInvokeInterfaceInfo(invokeUser.getId(),interfaceInfo.getId(),ip);
             if (!b||!c){
                 return handleNoAuth(response);
             }
