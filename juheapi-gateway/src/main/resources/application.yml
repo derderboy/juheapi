@@ -14,6 +14,12 @@ spring:
           uri: http://localhost:8123
           predicates:
             - Path=/api/**
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
 logging:
   level:
     org:

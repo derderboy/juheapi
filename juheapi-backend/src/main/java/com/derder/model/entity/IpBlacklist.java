@@ -26,10 +26,10 @@ public class IpBlacklist implements Serializable {
      * IP地址
      */
     @TableField(value = "ip_address")
-    private String ip_address;
+    private String ipAddress;
 
     /**
-     * 
+     *
      */
     @TableField(value = "userid")
     private Long userid;
@@ -38,7 +38,7 @@ public class IpBlacklist implements Serializable {
      * 添加时间
      */
     @TableField(value = "added_at")
-    private Date added_at;
+    private Date addedAt;
 
     /**
      * 加入黑名单原因
@@ -48,4 +48,20 @@ public class IpBlacklist implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public IpBlacklist(String ipAddress, Long userid) {
+        this.ipAddress = ipAddress;
+        this.userid = userid;
+    }
+
+    public IpBlacklist() {
+    }
+
+    public IpBlacklist(Long id, String ipAddress, Long userid, Date addedAt, String reason) {
+        this.id = id;
+        this.ipAddress = ipAddress;
+        this.userid = userid;
+        this.addedAt = addedAt;
+        this.reason = reason;
+    }
 }

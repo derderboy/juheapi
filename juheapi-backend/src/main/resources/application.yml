@@ -38,6 +38,12 @@ spring:
     port: 6379
     timeout: 5000
     password: 1234
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
 dubbo:
   application:
     name: dubbo-backend
